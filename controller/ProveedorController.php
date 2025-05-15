@@ -1,6 +1,6 @@
 <?php
- include_once '../model/proveedor.php';
- $dependencia = new proveedor();
+ include_once '../model/Proveedor.php';
+ $proveedor = new Proveedor();
 
  //-------------------------------------------------------------------
  // Funcion para crear 
