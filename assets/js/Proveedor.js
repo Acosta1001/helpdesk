@@ -100,8 +100,8 @@ $(document).ready(function () {
         funcion = 'buscar';
         $.post('../controller/ProveedorController.php',{dato, funcion},(response)=>{
             const respuesta = JSON.parse(response);
-            $('#id_dep').val(respuesta.id);
-            $('#nom_dep').val(respuesta.nombre);
+            $('#id_prove').val(respuesta.id);
+            $('#nom_prove').val(respuesta.nombre);
         })
     };
 
@@ -140,7 +140,7 @@ $(document).ready(function () {
     //----------------------------------------------------------
     $(document).on('click','.eliminar',function(){          
         if(tablaProveedor.row(this).child.isShown()){
-            var data = tablaDependencia.row(this).data();
+            var data = tablaProvedor.row(this).data();
         }else{
             var data = tablaProveedor.row($(this).parents("tr")).data();
         }
@@ -162,7 +162,7 @@ $(document).ready(function () {
             confirmButtonText: 'Si, eliminar!'
           }).then((result) => {
             if (result.value) {
-                $.post('../controller/ProvedorController.php',{id, funcion},(response)=>{
+                $.post('../controller/ProveedorController.php',{id, funcion},(response)=>{
                     if(response == 'eliminado' ){ 
                         Swal.fire(
                             'Eliminado!',
@@ -177,7 +177,7 @@ $(document).ready(function () {
                             'error'
                           )
                     }  
-                    tablaProvedor.ajax.reload(null, false);
+                    tablaProveedor.ajax.reload(null, false);
                 });
             }
           })
