@@ -1,91 +1,116 @@
 <?php
- include_once '../model/Software.php';
- $software = new Software();
-
- //-------------------------------------------------------------------
- // Funcion para crear 
- //-------------------------------------------------------------------
- if ($_POST['funcion']=='crear'){
-     $software->Crear(
-                            $_POST['producto_soft'],
-                            $_POST['num_licencia_soft'],
-                            $_POST['version_soft'],
-                            $_POST['cant_soft']
-                        );
- }
+include_once '../model/Software.php';
+$software = new Software();
 
 //-------------------------------------------------------------------
-// Funcion para editar
+// Crear software
 //-------------------------------------------------------------------
-if ($_POST['funcion']=='editar'){
-    $software->Editar($_POST['id_soft'], $_POST['producto_soft']);
+if ($_POST['funcion'] == 'crear') {
+    $software->Crear(
+        $_POST['id_soft'] ?? null,
+        $_POST['producto_soft'] ?? null,
+        $_POST['num_licencia_soft' ?? null],
+        $_POST['version_soft'] ?? null,
+        $_POST['cant_soft'] ?? null,
+        $_POST['fecha_compra_soft'] ?? null,
+        $_POST['valor_soft'] ?? null,
+        $_POST['proveedor_soft'] ?? null,
+        $_POST['factura_soft'] ?? null,
+        $_POST['disponible_soft'] ?? null
+    );
 }
 
 //-------------------------------------------------------------------
-// Funcion eliminar
+// Editar software
 //-------------------------------------------------------------------
-if ($_POST['funcion']=='eliminar'){
-    $software->Eliminar($_POST['id_soft']);        
+if ($_POST['funcion'] == 'editar') {
+    $software->Editar(
+        $_POST['id_soft'] ?? null,
+        $_POST['producto_soft'] ?? null,
+        $_POST['num_licencia_soft'] ?? null,
+        $_POST['version_soft'] ?? null,
+        $_POST['cant_soft'] ?? null,
+        $_POST['fecha_compra_soft'] ?? null,
+        $_POST['valor_soft'] ?? null,
+        $_POST['proveedor_soft'] ?? null,
+        $_POST['factura_soft'] ?? null,
+        $_POST['disponible_soft'] ?? null
+    );
 }
 
 //-------------------------------------------------------------------
-// Funcion para buscar todos los registros  
+// Eliminar software
 //-------------------------------------------------------------------
-if ($_POST['funcion']=='buscar_todos'){
-    //Variable que almacena la consulta en formato JSON
-    $json=array();
-    //LLamado al modelo
+if ($_POST['funcion'] == 'eliminar') {
+    $software->Eliminar($_POST['id_soft']);
+}
+
+//-------------------------------------------------------------------
+// Buscar todos los registros con filtro
+//-------------------------------------------------------------------
+if ($_POST['funcion'] == 'buscar_todos') {
+    $json = array();
     $software->BuscarTodos($_POST['dato']);
     foreach ($software->objetos as $objeto) {
-        $json[]=array(
-                        'id'=>$objeto->id_soft,
-                        'producto'=>$objeto->producto_soft,
-                        'version'=>$objeto->version_soft,
-                        'cantidad'=>$objeto->cant_soft
+        $json[] = array(
+            'id_soft' => $objeto->id_soft,
+            'producto_soft' => $objeto->producto_soft,
+            'num_licencia_soft' => $objeto->num_licencia_soft,
+            'version_soft' => $objeto->version_soft,
+            'cant_soft' => $objeto->cant_soft,
+            'fecha_compra_soft' => $objeto->fecha_compra_soft,
+            'valor_soft' => $objeto->valor_soft,
+            'proveedor_soft' => $objeto->proveedor_soft,
+            'factura_soft' => $objeto->factura_soft,
+            'disponible_soft' => $objeto->disponible_soft
         );
     }
-    $jsonstring = json_encode($json);
-    echo $jsonstring;
+    echo json_encode($json);
 }
 
 //-------------------------------------------------------------------
-// Funcion para buscar todos los registros DATATABLES
+// Buscar todos los registros (para listarlos en DataTable)
 //-------------------------------------------------------------------
-if ($_POST['funcion']=='listar'){
-    //Variable que almacena la consulta en formato JSON
-    $json=array();
-    //LLamado al modelo
+if ($_POST['funcion'] == 'listar') {
+    $json = array();
     $software->BuscarTodos('');
     foreach ($software->objetos as $objeto) {
-        $json[]=array(
-                        'id'=>$objeto->id_soft,
-                        'producto'=>$objeto->producto_soft,
-                        'version'=>$objeto->version_soft,
-                        'cantidad'=>$objeto->cant_soft
+        $json[] = array(
+            'id_soft' => $objeto->id_soft,
+            'producto_soft' => $objeto->producto_soft,
+            'num_licencia_soft' => $objeto->num_licencia_soft,
+            'version_soft' => $objeto->version_soft,
+            'cant_soft' => $objeto->cant_soft,
+            'fecha_compra_soft' => $objeto->fecha_compra_soft,
+            'valor_soft' => $objeto->valor_soft,
+            'proveedor_soft' => $objeto->proveedor_soft,
+            'factura_soft' => $objeto->factura_soft,
+            'disponible_soft' => $objeto->disponible_soft
         );
     }
-    $jsonstring = json_encode($json);
-    echo $jsonstring;
+    echo json_encode($json);
 }
 
 //-------------------------------------------------------------------
-// Funcion para buscar un registros  
+// Buscar un software por ID
 //-------------------------------------------------------------------
-if ($_POST['funcion']=='buscar'){
-    //Variable que almacena la consulta en formato JSON
-    $json=array();
-    //LLamado al modelo
-    $software->Buscar($_POST['dato']);
+if ($_POST['funcion'] == 'buscar') {
+    $json = array();
+    $software->Buscar($_POST['id_soft']);
     foreach ($software->objetos as $objeto) {
-        
-        $json[]=array(
-                        'id'=>$objeto->id_soft,
-                        'producto'=>$objeto->producto_soft,
-                        'version'=>$objeto->version_soft,
-                        'cantidad'=>$objeto->cant_soft
+        $json[] = array(
+            'id_soft' => $objeto->id_soft,
+            'producto_soft' => $objeto->producto_soft,
+            'num_licencia_soft' => $objeto->num_licencia_soft,
+            'version_soft' => $objeto->version_soft,
+            'cant_soft' => $objeto->cant_soft,
+            'fecha_compra_soft' => $objeto->fecha_compra_soft,
+            'valor_soft' => $objeto->valor_soft,
+            'proveedor_soft' => $objeto->proveedor_soft,
+            'factura_soft' => $objeto->factura_soft,
+            'disponible_soft' => $objeto->disponible_soft
         );
     }
-    $jsonstring = json_encode($json[0]);
-    echo $jsonstring;
+    echo json_encode($json[0]);
 }
 ?>

@@ -5,7 +5,7 @@ include_once 'layouts/nav.php';
 ?>
 
 <!------------------------------------------------------>
-<!--   Ventana Modal para CREAR Y EDITAR Software -->
+<!--   Ventana Modal para CREAR Y EDITAR Softwares -->
 <!------------------------------------------------------>
 <div class="modal fade" id="crear" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-md" role="document">
@@ -24,54 +24,62 @@ include_once 'layouts/nav.php';
             <i class="fa fa-times-circle m-1"> El registro ya existe</i>
           </div>
           <form id="form-crear">
-              <div class="form-group">
-                <label>Id</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                     <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                  </div>
-                  <input type="text" id="id_soft" class="form-control" placeholder="Ingrese ID">
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Producto</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                     <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                  </div>
-                  <input type="text" id="producto_soft" class="form-control" placeholder="Ingrese el nombre del producto">
-                </div>
-              </div>
-              <div class="form-group">
-                <label># de licencia</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
-                  </div>
-                  <input type="number" id="num_licencia_soft" class="form-control" placeholder="Ingrese el Numero de la licencia" required>
-                </div>
-              </div>    
-              <div class="form-group">
-                <label>Version</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
-                  </div>
-                  <input type="text" id="version_soft" class="form-control" placeholder="Ingrese el Numero de la licencia" required>
-                </div>
-              </div>    
-              <div class="form-group">
-                <label>Cantidad</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
-                  </div>
-                  <input type="text" id="Cant_soft" class="form-control" placeholder="Ingrese el Numero de la licencia" required>
-                </div>
-              </div>   
+            <div class="form-group">
+              <label>ID</label>
+              <input type="text" id="id_soft" class="form-control" placeholder="Ingrese ID">
+            </div>
+
+            <div class="form-group">
+              <label>Producto</label>
+              <input type="text" id="producto_soft" class="form-control" placeholder="Nombre del producto">
+            </div>
+
+            <div class="form-group">
+              <label>Número de Licencia</label>
+              <input type="text" id="num_licencia_soft" class="form-control" placeholder="Número de licencia">
+            </div>
+
+            <div class="form-group">
+              <label>Versión</label>
+              <input type="text" id="version_soft" class="form-control" placeholder="Versión del software">
+            </div>
+
+            <div class="form-group">
+              <label>Cantidad</label>
+              <input type="number" id="cant_soft" class="form-control" placeholder="Cantidad">
+            </div>
+
+            <div class="form-group">
+              <label>Fecha de Compra</label>
+              <input type="date" id="fecha_compra_soft" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label>Valor</label>
+              <input type="number" step="0.01" id="valor_soft" class="form-control" placeholder="Valor en $">
+            </div>
+
+            <div class="form-group">
+              <label>Proveedor</label>
+              <input type="text" id="proveedor_soft" class="form-control" placeholder="Proveedor">
+            </div>
+
+            <div class="form-group">
+              <label>Factura</label>
+              <input type="text" id="factura_soft" class="form-control" placeholder="Número de factura">
+            </div>
+
+            <div class="form-group">
+              <label>Disponible</label>
+              <select id="disponible_soft" class="form-control">
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
             <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
-                  <button type="submit" class="btn bg-gradient-primary">Guardar</button>
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn bg-gradient-primary">Guardar</button>
             </div>
           </form>
           </div>
@@ -113,7 +121,7 @@ include_once 'layouts/nav.php';
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="tablaDependencia" class="table table-bordered table-hover dataTable dtr-inline" role="grid"></table>
+              <table id="tablaSoftware" class="table table-bordered table-hover dataTable dtr-inline" role="grid"></table>
             </div>
             <!-- /.card-body -->
           </div>

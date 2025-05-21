@@ -23,49 +23,56 @@ $(document).ready(function () {
     //----------------------------------------------------------
     // Construccion DataTable
     //----------------------------------------------------------
-    tablaSoftware = $('#tablaSoftware').DataTable({  
-        "responsive": true,
-        "autoWidth": false,
-        //Parametrizar lenguaje
-        "language" : {
-            "lengthMenu": "Mostrar _MENU_ registros",
-            "zeroRecords": "No se encontraron resultados",
-            "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "infoEmpty": "Registros del 0 al 0 de un total de 0 registros",
-            "infoFiltered": "(filtrado de un total de _MAX_ registros)",
-            "sSearch": "Buscar:",
-            "oPaginate": {
-                "sFirst": "Primero",
-                "sLast":"Último",
-                "sNext":"Siguiente",
-                "sPrevious": "Anterior"
-             },
-             "sProcessing":"Procesando...",
+    tablaSoftware = $('#tablaSoftware').DataTable({
+    "responsive": true,
+    "autoWidth": false,
+    "language": {
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "zeroRecords": "No se encontraron resultados",
+        "info": "Registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "infoEmpty": "Registros del 0 al 0 de un total de 0 registros",
+        "infoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sSearch": "Buscar:",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
         },
-        "ajax":{            
-            "url": "../controller/SoftwareController.php",
-            "method": 'POST', //usamos el metodo POST
-            "data":{funcion:'listar'}, //enviamos POST
-            "dataSrc":""
-        },
-        "lengthMenu":		[[5, 10, 20, 25, 50, -1], [5, 10, 20, 25, 50, "Todos"]],
-        "iDisplayLength":	5,
-        "columns":[
-            { "data": "id_soft", "title":"ID"},
-            { "data": "producto_soft", "title":"Producto"},
-            { "data": "version_soft", "title":"Version"},
-            { "data": "cant_soft", "title":"Cantidad"},
-            {"defaultContent": "<div class='btn-group'><button class='editar btn btn-sm btn-success' title='Editar' data-toggle='modal' data-target='#crear'><i class='fas fa-pencil-alt'></i><button class='eliminar btn btn-sm btn-danger' title='Eliminar'><i class='fas fa-trash'></i></button></div>", "title":"Acciones"}
-        ],
-        //Configurar COLUMNAS ---- Centrado Acciones
-        "columnDefs": [ 
-            {   "className": "text-center",
-                "targets": [4],
-                "visible": true,
-                "searchable": true
-            }
-        ]
-    });    
+        "sProcessing": "Procesando...",
+    },
+    "ajax": {
+        "url": "../controller/SoftwareController.php",
+        "method": 'POST',
+        "data": { funcion: 'listar' },
+        "dataSrc": ""
+    },
+    "lengthMenu": [[5, 10, 20, 25, 50, -1], [5, 10, 20, 25, 50, "Todos"]],
+    "iDisplayLength": 5,
+    "columns": [
+        { "data": "id_soft", "title": "ID" },
+        { "data": "producto_soft", "title": "Producto" },
+        { "data": "num_licencia_soft", "title": "Licencia" },
+        { "data": "version_soft", "title": "Versión" },
+        { "data": "cant_soft", "title": "Cantidad" },
+        { "data": "fecha_compra_soft", "title": "Fecha de compra" },
+        { "data": "valor_soft", "title": "Valor" },
+        { "data": "proveedor_soft", "title": "Proveedor" },
+        { "data": "factura_soft", "title": "Factura" },
+        { "data": "disponible_soft", "title": "Disponible" },
+        {
+            "defaultContent": "<div class='btn-group'><button class='editar btn btn-sm btn-success' title='Editar' data-toggle='modal' data-target='#crear'><i class='fas fa-pencil-alt'></i></button><button class='eliminar btn btn-sm btn-danger' title='Eliminar'><i class='fas fa-trash'></i></button></div>",
+            "title": "Acciones"
+        }
+    ],
+    "columnDefs": [{
+        "className": "text-center",
+        "targets": [10],
+        "visible": true,
+        "searchable": true
+    }]
+});
+  
     //editar("#tablaDependencia tbody",tablaDependencia);
 
     //----------------------------------------------------------
@@ -98,101 +105,89 @@ $(document).ready(function () {
     //-------------------------------------------------------------
     //Buscar un registro
     //-------------------------------------------------------------
-    function buscar(dato) {
+    function buscar(id) {
         funcion = 'buscar';
-        $.post('../controller/SoftwareController.php',{dato, funcion},(response)=>{
-            const respuesta = JSON.parse(response);
-            $('#id_soft').val(respuesta.id);
-            $('#producto_soft').val(respuesta.producto);
-            $('#version_soft').val(respuesta.version);
-            $('#cant_soft').val(respuesta.cantidad);
-        })
-    };
+        $.post('../controller/SoftwareController.php', { id, funcion }, (response) => {
+            const s = JSON.parse(response);
+            $('#id_soft').val(s.id_soft);
+            $('#producto_soft').val(s.producto_soft);
+            $('#num_licencia_soft').val(s.num_licencia_soft);
+            $('#version_soft').val(s.version_soft);
+            $('#cant_soft').val(s.cant_soft);
+            $('#fecha_compra_soft').val(s.fecha_compra_soft);
+            $('#valor_soft').val(s.valor_soft);
+            $('#proveedor_soft').val(s.proveedor_soft);
+            $('#factura_soft').val(s.factura_soft);
+            $('#disponible_soft').val(s.disponible_soft);
+    });
+}
+
 
     //----------------------------------------------------------
     // Funcion para crear o editar en el formulario
     //----------------------------------------------------------
-    $('#form-crear').submit(e=>{
-        let producto_soft = $('#producto_soft').val();
-        let id_soft = $('#id_soft').val();
-        let version_soft = $('#version_soft').val();
-        let num_licencia_soft = $('#num_licencia_soft').val();
-        let cant_soft = $('#cant_soft').val();
-        if (edit == true)
-            funcion = 'editar';
-        else
-            funcion = 'crear';
+    $('#form-crear').submit(e => {
+    e.preventDefault();
+    funcion = edit ? 'editar' : 'crear';
 
-        $.post('../controller/SoftwareController.php',{id_soft, producto_soft, num_licencia_soft, version_soft,cant_soft,funcion},(response)=>{
-            console.log(response);
-            if(response == 'add' || response == 'update' ){ 
-                //$('#addcliente').hide('slow');
-                //$('#addcliente').show(1000);
-                //$('#addcliente').hide(2000);
-                $('#crear').modal('hide');
-                tablaSoftware.ajax.reload(null, false);
-            }   
-            else{
-                $('#noadd').hide('slow');
-                $('#noadd').show(1000);
-                $('#noadd').hide(2000);
-            }  
-        });
-        e.preventDefault();
-    });      
+    let datos = {
+        id_soft: $('#id_soft').val(),
+        producto_soft: $('#producto_soft').val(),
+        num_licencia_soft: $('#num_licencia_soft').val(),
+        version_soft: $('#version_soft').val(),
+        cant_soft: $('#cant_soft').val(),
+        fecha_compra_soft: $('#fecha_compra_soft').val(),
+        valor_soft: $('#valor_soft').val(),
+        proveedor_soft: $('#proveedor_soft').val(),
+        factura_soft: $('#factura_soft').val(),
+        disponible_soft: $('#disponible_soft').val(),
+        funcion: funcion
+    };
+
+    $.post('../controller/SoftwareController.php', datos, (response) => {
+        console.log(response);
+        if (response === 'add' || response === 'update') {
+            $('#crear').modal('hide');
+            tablaSoftware.ajax.reload(null, false);
+        } else {
+            $('#noadd').hide('slow').show(1000).hide(2000);
+        }
+    });
+});
+    
 
     //----------------------------------------------------------
     // Funcion que evalua click en ELIMNAR y obtiene el id
     // navegando a traves de la propiedad parentElement
     //----------------------------------------------------------
-    $(document).on('click','.eliminar',function(){          
-        if(tablaSoftware.row(this).child.isShown()){
-            var data = tablaSoftware.row(this).data();
-        }else{
-            var data = tablaSoftware.row($(this).parents("tr")).data();
+    $(document).on('click', '.eliminar', function () {
+    var data = tablaSoftware.row($(this).parents("tr")).data();
+    const id = data.id_soft;
+    const nombre = data.producto_soft;
+    funcion = 'eliminar';
+
+    Swal.fire({
+        title: '¿Desea eliminar ' + nombre + '?',
+        text: "Esto no se podrá revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        reverseButtons: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar!'
+    }).then((result) => {
+        if (result.value) {
+            $.post('../controller/SoftwareController.php', { id, funcion }, (response) => {
+                if (response == 'eliminado') {
+                    Swal.fire('Eliminado!', nombre + ' fue eliminado.', 'success');
+                } else {
+                    Swal.fire('No se pudo eliminar!', nombre + ' está en uso.', 'error');
+                }
+                tablaSoftware.ajax.reload(null, false);
+            });
         }
-        const id = data.id; //capturo el ID
-        const producto = data.producto; //capturo el nombre		            
-        //Cargo los objetos ocultos obtenidos con javascript y enviarlos al controlador
-        buscar(id);        
-        funcion = 'eliminar';
-
-        Swal.fire({
-            title: 'Desea eliminar '+producto+'?',
-            text: "Esto no se podra revertir!",
-            icon: 'warning',
-            showCancelButton: true,
-            reverseButtons: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, eliminar!'
-          }).then((result) => {
-            if (result.value) {
-                $.post('../controller/SoftwareController.php',{id, funcion},(response)=>{
-                    if(response == 'eliminado' ){ 
-                        Swal.fire(
-                            'Eliminado!',
-                            producto + ' fue eliminado.',
-                            'success'
-                          )
-                    }   
-                    else{
-                        Swal.fire(
-                            'No se pudo eliminar!',
-                            producto + ' esta utilizado',
-                            'error'
-                          )
-                    }  
-                    tablaSoftware.ajax.reload(null, false);
-                });
-            }
-          })
     });
-
 });
 
- 
-
-
-    
+})

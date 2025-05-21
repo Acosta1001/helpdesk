@@ -5,79 +5,104 @@ class Software {
     var $objetos;
     var $acceso;
 
-    public function __construct(){
+    public function __construct() {
         $db = new Conexion();
         $this->acceso = $db->pdo;
     }
 
-    //----------------------------//
-    //Funcion Crear               //
-    //----------------------------//
-    public function Crear ($producto,$licencia,$version1,$cantidad){
-        $sql = "INSERT INTO software (producto_soft,num_licencia_soft, cant_soft) VALUE (:producto, :licencia, :version1,:cantidad)";
+    //------------------------------------
+    // Crear nuevo software con todos los campos
+    //------------------------------------
+    public function Crear($id, $producto, $licencia, $version, $cantidad, $fecha_compra, $valor, $proveedor, $factura, $disponible) {
+        $sql = "INSERT INTO software 
+                (id_soft, producto_soft, num_licencia_soft, version_soft, cant_soft, fecha_compra_soft, valor_soft, proveedor_soft, factura_soft, disponible_soft)
+                VALUES 
+                (:id, :producto, :licencia, :version, :cantidad, :fecha_compra, :valor, :proveedor, :factura, :disponible)";
         $query = $this->acceso->prepare($sql);
-        $query->execute(array(
-                                ':nombre'=>$nombre,
-                                ':licencia'=>$licencia,
-                                ':version1'=>$version1,
-                                ':cantidad'=>$cantidad
-                            )
-                        );    
+        $query->execute([
+            ':id' => $id,
+            ':producto' => $producto,
+            ':licencia' => $licencia,
+            ':version' => $version,
+            ':cantidad' => $cantidad,
+            ':fecha_compra' => $fecha_compra,
+            ':valor' => $valor,
+            ':proveedor' => $proveedor,
+            ':factura' => $factura,
+            ':disponible' => $disponible
+        ]);
         echo 'add';
-    }  
+    }
 
-    //-----------------------------------------------------------
-    // Editar
-    //-----------------------------------------------------------
-    function Editar($id, $producto){
-        $sql = "UPDATE software SET producto_soft=:producto 
-                WHERE id_soft = :id";        
+    //------------------------------------
+    // Editar software por ID
+    //------------------------------------
+    public function Editar($id, $producto, $licencia, $version, $cantidad, $fecha_compra, $valor, $proveedor, $factura, $disponible) {
+        $sql = "UPDATE software SET 
+                    producto_soft = :producto,
+                    num_licencia_soft = :licencia,
+                    version_soft = :version,
+                    cant_soft = :cantidad,
+                    fecha_compra_soft = :fecha_compra,
+                    valor_soft = :valor,
+                    proveedor_soft = :proveedor,
+                    factura_soft = :factura,
+                    disponible_soft = :disponible
+                WHERE id_soft = :id";
         $query = $this->acceso->prepare($sql);
-        $query->execute(array(':id'=>$id,':nombre'=>$producto));
+        $query->execute([
+            ':id' => $id,
+            ':producto' => $producto,
+            ':licencia' => $licencia,
+            ':version' => $version,
+            ':cantidad' => $cantidad,
+            ':fecha_compra' => $fecha_compra,
+            ':valor' => $valor,
+            ':proveedor' => $proveedor,
+            ':factura' => $factura,
+            ':disponible' => $disponible
+        ]);
         echo 'update';
     }
 
-    //-----------------------------------------------------------
-    // Eliminar
-    //-----------------------------------------------------------
-    function Eliminar($id){
-        $sql = "DELETE FROM software WHERE id_soft = :id";        
+    //------------------------------------
+    // Eliminar software
+    //------------------------------------
+    public function Eliminar($id) {
+        $sql = "DELETE FROM software WHERE id_soft = :id";
         $query = $this->acceso->prepare($sql);
-        $query->execute(array(':id'=>$id)); 
-        if(!empty($query->execute(array(':id'=>$id))))
+        $query->execute([':id' => $id]);
+        if ($query->rowCount() > 0)
             echo 'eliminado';
-        else 
+        else
             echo 'noeliminado';
     }
 
-    //-----------------------------------------------------------
-    // Buscar los registros segun criterio de busqueda en consulta
-    //-----------------------------------------------------------
-    function BuscarTodos($consulta){
-        if(!empty($consulta)){                
-            $sql = "SELECT * FROM software WHERE producto_soft LIKE :consulta";      
+    //------------------------------------
+    // Buscar todos los softwares (con filtro)
+    //------------------------------------
+    public function BuscarTodos($consulta) {
+        if (!empty($consulta)) {
+            $sql = "SELECT * FROM software WHERE producto_soft LIKE :consulta";
             $query = $this->acceso->prepare($sql);
-            $query->execute(array(':consulta'=>"%$consulta%"));
-            $this->objetos = $query->fetchall();
-        }
-        else{
-            $sql = "SELECT * FROM software WHERE producto_soft NOT LIKE '' ORDER BY id_soft";          
+            $query->execute([':consulta' => "%$consulta%"]);
+        } else {
+            $sql = "SELECT * FROM software ORDER BY id_soft";
             $query = $this->acceso->prepare($sql);
             $query->execute();
-            $this->objetos = $query->fetchall();
         }
-        //Retorna la consulta
-        return $this->objetos;    
+        $this->objetos = $query->fetchAll();
+        return $this->objetos;
     }
 
-    //--------------------------------
-    //Busca un usuario segun el ID
-    //--------------------------------
-    function Buscar($id){
-        $sql = 'SELECT * FROM software WHERE id_soft = :id';
+    //------------------------------------
+    // Buscar software por ID
+    //------------------------------------
+    public function Buscar($id) {
+        $sql = "SELECT * FROM software WHERE id_soft = :id";
         $query = $this->acceso->prepare($sql);
-        $query->execute(array(':id'=>$id));
-        $this->objetos=$query->fetchall();
+        $query->execute([':id' => $id]);
+        $this->objetos = $query->fetchAll();
         return $this->objetos;
     }
 }
